@@ -223,7 +223,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:$packageName/core/domain/entity/use_case.dart';
 
-part '$featureName.freezed.dart';
+part '${featureName}_cubit.freezed.dart';
 part '${featureName}_state.dart';
 
 @injectable
@@ -418,10 +418,12 @@ String dataFreezedRepositoryFileContent(
     String featureName, String packageName) {
   final featureNameUppercase = featureName.snakeToCamel();
   return '''
-import 'package:$packageName/core/errors/failure.dart';
-import 'package:$packageName/features/$featureName/domain/repository/${featureName}_repository.dart';
-import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:$packageName/features/$featureName/domain/repository/${featureName}_repository.dart';
+
+@LazySingleton(as: TfoRepository)
+class TfoRepositoryImpl extends TfoRepository {}
+
 
 @LazySingleton(as: ${featureNameUppercase}Repository)
 class ${featureNameUppercase}RepositoryImpl extends ${featureNameUppercase}Repository {
@@ -628,8 +630,8 @@ String getFreezedModelFileContent(String featureName, String packageName) {
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:$packageName/features/$featureName/domain/entity/${featureName}_entity.dart';
 
-part '$featureName.freezed.dart';
-part '$featureName.g.dart';
+part '${featureName}_model.freezed.dart';
+part '${featureName}_model.g.dart';
 
 @freezed
 class ${featureNameUppercase}Model with _\$${featureNameUppercase}Model implements ${featureNameUppercase}Entity {

@@ -69,8 +69,7 @@ void createNewFeature(String featureName, bool isFreezed) {
 
   FileUtils.createFile(featureFiles.pageFile);
 
-//   final packageName = getPackageName();//TODO: Production
-  final packageName = "pure_clean_architecture_cli";
+  final packageName = getPackageName();
 
   //Entity
   FileUtils.writeFile(
