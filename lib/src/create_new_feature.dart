@@ -20,7 +20,7 @@ String getPackageName() {
   return packageName;
 }
 
-void createNewFeature(String featureName) {
+void createNewFeature(String featureName, bool isFreezed) {
   final featureFolders = PureCleanArchitectureFolders(featureName: featureName);
   final featureFiles = PureCleanArchitectureFiles(
       featureName: featureName, folders: featureFolders);
@@ -67,80 +67,135 @@ void createNewFeature(String featureName) {
 
   FileUtils.createFile(featureFiles.domainRepositoryFile);
 
-  FileUtils.createFile(featureFiles.addUseCaseFile);
-
-  FileUtils.createFile(featureFiles.updateUseCaseFile);
-
-  FileUtils.createFile(featureFiles.deleteUseCaseFile);
-
-  FileUtils.createFile(featureFiles.getUseCaseFile);
-
-  FileUtils.createFile(featureFiles.managerBlocFile);
-
-  FileUtils.createFile(featureFiles.managerEventFile);
-
-  FileUtils.createFile(featureFiles.managerStateFile);
-
   FileUtils.createFile(featureFiles.pageFile);
 
-  final packageName = getPackageName();
+//   final packageName = getPackageName();//TODO: Production
+  final packageName = "pure_clean_architecture_cli";
 
+  //Entity
   FileUtils.writeFile(
     FileUtils.getFile(featureFiles.entityFile),
     getEntityFileContent(featureName),
   );
-  FileUtils.writeFile(
-    FileUtils.getFile(featureFiles.modelFile),
-    getModelFileContent(featureName, packageName),
-  );
-  FileUtils.writeFile(
-    FileUtils.getFile(featureFiles.localDSFile),
-    getLocalDataSourceFileContent(featureName, packageName),
-  );
-  FileUtils.writeFile(
-    FileUtils.getFile(featureFiles.remoteDSFile),
-    getRemoteDataSourceFileContent(featureName, packageName),
-  );
-  FileUtils.writeFile(
-    FileUtils.getFile(featureFiles.domainRepositoryFile),
-    domainRepositoryFileContent(featureName, packageName),
-  );
-  FileUtils.writeFile(
-    FileUtils.getFile(featureFiles.dataRepositoryFile),
-    dataRepositoryFileContent(featureName, packageName),
-  );
-  FileUtils.writeFile(
-    FileUtils.getFile(featureFiles.addUseCaseFile),
-    addUseCaseFileContent(featureName, packageName),
-  );
-  FileUtils.writeFile(
-    FileUtils.getFile(featureFiles.updateUseCaseFile),
-    updateUseCaseFileContent(featureName, packageName),
-  );
-  FileUtils.writeFile(
-    FileUtils.getFile(featureFiles.deleteUseCaseFile),
-    deleteUseCaseFileContent(featureName, packageName),
-  );
-  FileUtils.writeFile(
-    FileUtils.getFile(featureFiles.getAllUseCaseFile),
-    getAllUseCaseFileContent(featureName, packageName),
-  );
-  FileUtils.writeFile(
-    FileUtils.getFile(featureFiles.getUseCaseFile),
-    getUseCaseFileContent(featureName, packageName),
-  );
-  FileUtils.writeFile(
-    FileUtils.getFile(featureFiles.managerBlocFile),
-    getBlocFileContent(featureName, packageName),
-  );
-  FileUtils.writeFile(
-    FileUtils.getFile(featureFiles.managerEventFile),
-    getBlocEventFileContent(featureName, packageName),
-  );
-  FileUtils.writeFile(
-    FileUtils.getFile(featureFiles.managerStateFile),
-    getBlocStateFileContent(featureName, packageName),
-  );
+  //Models
+  if (isFreezed) {
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.modelFile),
+      getFreezedModelFileContent(featureName, packageName),
+    );
+  } else {
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.modelFile),
+      getModelFileContent(featureName, packageName),
+    );
+  }
+  //Local DataSource
+  if (isFreezed) {
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.localDSFile),
+      getFreezedLocalDataSourceFileContent(featureName, packageName),
+    );
+  } else {
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.localDSFile),
+      getLocalDataSourceFileContent(featureName, packageName),
+    );
+  }
+  //Remote DataSource
+  if (isFreezed) {
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.remoteDSFile),
+      getFreezedRemoteDataSourceFileContent(featureName, packageName),
+    );
+  } else {
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.remoteDSFile),
+      getRemoteDataSourceFileContent(featureName, packageName),
+    );
+  }
+  //Domain Repository
+  if (isFreezed) {
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.domainRepositoryFile),
+      domainFreezedRepositoryFileContent(featureName, packageName),
+    );
+  } else {
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.domainRepositoryFile),
+      domainRepositoryFileContent(featureName, packageName),
+    );
+  }
+  //Data Repository
+  if (isFreezed) {
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.dataRepositoryFile),
+      dataFreezedRepositoryFileContent(featureName, packageName),
+    );
+  } else {
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.dataRepositoryFile),
+      dataRepositoryFileContent(featureName, packageName),
+    );
+  }
+  if (!isFreezed) {
+    FileUtils.createFile(featureFiles.addUseCaseFile);
+
+    FileUtils.createFile(featureFiles.updateUseCaseFile);
+
+    FileUtils.createFile(featureFiles.deleteUseCaseFile);
+
+    FileUtils.createFile(featureFiles.getUseCaseFile);
+
+    FileUtils.createFile(featureFiles.managerBlocFile);
+
+    FileUtils.createFile(featureFiles.managerEventFile);
+
+    FileUtils.createFile(featureFiles.managerStateFile);
+
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.addUseCaseFile),
+      addUseCaseFileContent(featureName, packageName),
+    );
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.updateUseCaseFile),
+      updateUseCaseFileContent(featureName, packageName),
+    );
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.deleteUseCaseFile),
+      deleteUseCaseFileContent(featureName, packageName),
+    );
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.getAllUseCaseFile),
+      getAllUseCaseFileContent(featureName, packageName),
+    );
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.getUseCaseFile),
+      getUseCaseFileContent(featureName, packageName),
+    );
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.managerBlocFile),
+      getBlocFileContent(featureName, packageName),
+    );
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.managerEventFile),
+      getBlocEventFileContent(featureName, packageName),
+    );
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.managerStateFile),
+      getBlocStateFileContent(featureName, packageName),
+    );
+  } else {
+    //Cubit
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.managerCubitFile),
+      getFreezedCubitFileContent(featureName, packageName),
+    );
+    //Cubit State
+    FileUtils.writeFile(
+      FileUtils.getFile(featureFiles.managerCubitStateFile),
+      getFreezedCubitStateFileContent(featureName, packageName),
+    );
+  }
 
   Logger.green.log('Feature created successfully');
 }

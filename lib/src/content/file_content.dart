@@ -214,6 +214,38 @@ class ${featureNameUppercase}Bloc extends Bloc<${featureNameUppercase}Event, ${f
 ''';
 }
 
+String getFreezedCubitFileContent(String featureName, String packageName) {
+  final featureNameUppercase = featureName.snakeToCamel();
+  return '''
+import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
+import 'package:$packageName/core/domain/entity/use_case.dart';
+
+part '$featureName.freezed.dart';
+part '${featureName}_state.dart';
+
+@injectable
+class ${featureNameUppercase}Cubit extends Cubit<${featureNameUppercase}State> {
+  ${featureNameUppercase}Cubit()
+      : super(const ${featureNameUppercase}State.initial());
+}
+''';
+}
+
+String getFreezedCubitStateFileContent(String featureName, String packageName) {
+  final featureNameUppercase = featureName.snakeToCamel();
+  return '''
+part of '${featureName}_cubit.dart';
+
+@freezed
+class ${featureNameUppercase}State with _\$${featureNameUppercase}State {
+  const factory ${featureNameUppercase}State.initial() = _Initial;
+}
+''';
+}
+
 String getUseCaseFileContent(String featureName, String packageName) {
   final featureNameUppercase = featureName.snakeToCamel();
   return '''
@@ -382,6 +414,22 @@ class ${featureNameUppercase}RepositoryImpl extends ${featureNameUppercase}Repos
 ''';
 }
 
+String dataFreezedRepositoryFileContent(
+    String featureName, String packageName) {
+  final featureNameUppercase = featureName.snakeToCamel();
+  return '''
+import 'package:$packageName/core/errors/failure.dart';
+import 'package:$packageName/features/$featureName/domain/repository/${featureName}_repository.dart';
+import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
+
+@LazySingleton(as: ${featureNameUppercase}Repository)
+class ${featureNameUppercase}RepositoryImpl extends ${featureNameUppercase}Repository {
+}
+
+''';
+}
+
 String domainRepositoryFileContent(String featureName, String packageName) {
   final featureNameUppercase = featureName.snakeToCamel();
   final snakeCaseFeatureName = featureName.snakeToCamelFirstLetterSmall();
@@ -398,6 +446,17 @@ abstract class ${featureNameUppercase}Repository {
   Future<Either<Failure, ${featureNameUppercase}Entity>> create$featureNameUppercase(Add${featureNameUppercase}Params ${snakeCaseFeatureName}Params);
   Future<Either<Failure, ${featureNameUppercase}Entity>> update$featureNameUppercase(Update${featureNameUppercase}Params ${snakeCaseFeatureName}Params);
   Future<Either<Failure, ${featureNameUppercase}Entity>> delete$featureNameUppercase(String ${snakeCaseFeatureName}Id);
+}
+''';
+}
+
+String domainFreezedRepositoryFileContent(
+    String featureName, String packageName) {
+  final featureNameUppercase = featureName.snakeToCamel();
+  return '''
+import 'package:dartz/dartz.dart';
+
+abstract class ${featureNameUppercase}Repository {
 }
 ''';
 }
@@ -447,6 +506,22 @@ class ${featureNameUppercase}RemoteDataSourceImpl extends ${featureNameUppercase
     // TODO: implement get${featureNameUppercase}ById
     throw UnimplementedError();
   }
+}
+''';
+}
+
+String getFreezedRemoteDataSourceFileContent(
+    String featureName, String packageName) {
+  final featureNameUppercase = featureName.snakeToCamel();
+  return '''
+import 'package:injectable/injectable.dart';
+
+abstract class ${featureNameUppercase}RemoteDataSource {
+
+}
+@LazySingleton(as: ${featureNameUppercase}RemoteDataSource)
+class ${featureNameUppercase}RemoteDataSourceImpl extends ${featureNameUppercase}RemoteDataSource {
+
 }
 ''';
 }
@@ -501,10 +576,30 @@ class ${featureNameUppercase}LocalDataSourceImpl extends ${featureNameUppercase}
 ''';
 }
 
+String getFreezedLocalDataSourceFileContent(
+    String featureName, String packageName) {
+  final featureNameUppercase = featureName.snakeToCamel();
+  return '''
+import 'package:injectable/injectable.dart';
+
+abstract class ${featureNameUppercase}LocalDataSource {
+}
+
+@LazySingleton(as: ${featureNameUppercase}LocalDataSource)
+class ${featureNameUppercase}LocalDataSourceImpl extends ${featureNameUppercase}LocalDataSource {
+
+}
+''';
+}
+
 String getEntityFileContent(String featureName) {
   final featureNameUppercase = featureName.snakeToCamel();
   return '''
-class ${featureNameUppercase}Entity {}
+class ${featureNameUppercase}Entity {
+
+  const ${featureNameUppercase}Entity();
+
+}
 ''';
 }
 
@@ -523,6 +618,25 @@ class ${featureNameUppercase}Model extends ${featureNameUppercase}Entity {
   Map<String, dynamic> toJson() {
     return {};
   }
+}
+''';
+}
+
+String getFreezedModelFileContent(String featureName, String packageName) {
+  final featureNameUppercase = featureName.snakeToCamel();
+  return '''
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:$packageName/features/$featureName/domain/entity/${featureName}_entity.dart';
+
+part '$featureName.freezed.dart';
+part '$featureName.g.dart';
+
+@freezed
+class ${featureNameUppercase}Model with _\$${featureNameUppercase}Model implements ${featureNameUppercase}Entity {
+  const factory ${featureNameUppercase}Model() = _${featureNameUppercase}Model;
+
+  factory ${featureNameUppercase}Model.fromJson(Map<String, dynamic> json) =>
+      _\$${featureNameUppercase}ModelFromJson(json);
 }
 ''';
 }

@@ -43,6 +43,10 @@ class PureCleanArchitectureFiles {
       '${folders.featurePresentationManagerDir}/${featureName}_state.dart';
   String get pageFile =>
       '${folders.featurePresentationPageDir}/${featureName}_page.dart';
+  String get managerCubitFile =>
+      '${folders.featurePresentationManagerDir}/${featureName}_cubit.dart';
+  String get managerCubitStateFile =>
+      '${folders.featurePresentationManagerDir}/${featureName}_state.dart';
 }
 
 // Core Directory Files
