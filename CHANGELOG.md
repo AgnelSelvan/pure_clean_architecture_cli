@@ -12,3 +12,6 @@
 
 ## 1.2.2
 - Generate Clean Architecture folder based on Freezed Package and Minor fixes
+
+## 1.2.3
+- Generate Clean Architecture folder based on Freezed Package and Enhancement on Repository folder

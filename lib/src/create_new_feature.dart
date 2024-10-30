@@ -195,6 +195,10 @@ void createNewFeature(String featureName, bool isFreezed) {
       getFreezedCubitStateFileContent(featureName, packageName),
     );
   }
+  FileUtils.writeFile(
+    FileUtils.getFile(featureFiles.pageFile),
+    getPageFileContent(featureName, packageName),
+  );
 
   Logger.green.log('Feature created successfully');
 }

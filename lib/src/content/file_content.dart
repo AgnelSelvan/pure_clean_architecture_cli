@@ -418,12 +418,20 @@ String dataFreezedRepositoryFileContent(
   final featureNameUppercase = featureName.snakeToCamel();
   return '''
 import 'package:injectable/injectable.dart';
+import 'package:$packageName/features/$featureName/data/datasource/${featureName}_local_datasource.dart';
+import 'package:$packageName/features/$featureName/data/datasource/${featureName}_remote_datasource.dart';
 import 'package:$packageName/features/$featureName/domain/repository/${featureName}_repository.dart';
 
 @LazySingleton(as: ${featureNameUppercase}Repository)
 class ${featureNameUppercase}RepositoryImpl extends ${featureNameUppercase}Repository {
-}
+  final ${featureNameUppercase}LocalDataSource ${featureName}LocalDataSource;
+  final ${featureNameUppercase}RemoteDataSource ${featureName}RemoteDataSource;
 
+  ${featureNameUppercase}RepositoryImpl({
+    required this.${featureName}LocalDataSource,
+    required this.${featureName}RemoteDataSource,
+  });
+}
 ''';
 }
 
@@ -649,6 +657,22 @@ abstract class UseCase<Type, Params> {
 class NoParams extends Equatable {
   @override
   List<Object?> get props => [];
+}
+''';
+}
+
+String getPageFileContent(String featureName, String packageName) {
+  final featureNameUppercase = featureName.snakeToCamel();
+  return '''
+import 'package:flutter/material.dart';
+
+class ${featureNameUppercase}Page extends StatelessWidget {
+  const ${featureNameUppercase}Page({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold();
+  }
 }
 ''';
 }
