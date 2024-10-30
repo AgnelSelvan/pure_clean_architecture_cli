@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:pure_clean_architecture_cli/extensions/string.dart';
 import 'package:pure_clean_architecture_cli/src/content/file_content.dart';
 import 'package:pure_clean_architecture_cli/src/utils/constants.dart';
 import 'package:pure_clean_architecture_cli/src/utils/file_utils.dart';
@@ -199,6 +200,41 @@ void createNewFeature(String featureName, bool isFreezed) {
     FileUtils.getFile(featureFiles.pageFile),
     getPageFileContent(featureName, packageName),
   );
+  if (isFreezed) {
+    if (File(handleGenericModelFile).existsSync()) {
+      //Read the Generic Model File and Add new Feature Model
+      String handleGenericModelFileContent =
+          File(handleGenericModelFile).readAsStringSync();
+      final featureNameUppercase = featureName.snakeToCamel();
+
+      handleGenericModelFileContent = handleGenericModelFileContent
+          .replaceFirst('''}
+  return responseType ?? response.data;''',
+              '''} else if (T == ${featureNameUppercase}Model) {
+    responseType = ${featureNameUppercase}Model.fromJson(response.data) as T;
+  } else if (T == List<${featureNameUppercase}Model>) {
+    responseType = (response.data as List)
+        .map((e) => ${featureNameUppercase}Model.fromJson(e))
+        .toList() as T;
+  }
+  return responseType ?? response.data;''');
+
+      File(handleGenericModelFile)
+          .writeAsStringSync(handleGenericModelFileContent);
+      if (File(networkFile).existsSync()) {
+        //Read the Network File and Add new Feature Model
+        String networkFileContent = File(networkFile).readAsStringSync();
+        networkFileContent = networkFileContent.replaceFirst(
+            "import 'dart:io';",
+            '''import 'dart:io';\nimport 'package:$packageName/features/$featureName/data/models/${featureName}_model.dart';''');
+
+        File(networkFile).writeAsStringSync(networkFileContent);
+      }
+      Logger.green.log('Model added to handle_generic_response.dart');
+    } else {
+      Logger.red.log('handle_generic_response.dart file not found');
+    }
+  }
 
   Logger.green.log('Feature created successfully');
 }

@@ -49,6 +49,11 @@ class PureCleanArchitectureFiles {
       '${folders.featurePresentationManagerDir}/${featureName}_state.dart';
 }
 
+String get handleGenericModelFile =>
+    'lib/core/data/data_source/remote/network/handle_generic_response.dart';
+String get networkFile =>
+    'lib/core/data/data_source/remote/network/network.dart';
+
 // Core Directory Files
 String get coreAPIFile => '$coreDir/api/api.dart';
 String get coreAssetsFile => '$coreDir/assets/assets.dart';

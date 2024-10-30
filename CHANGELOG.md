@@ -15,3 +15,9 @@
 
 ## 1.2.3
 - Generate Clean Architecture folder based on Freezed Package and Enhancement on Repository folder
+
+## 1.2.5
+- Handled Generic Model
+
+## 1.2.6
+- Import Issue fixes
