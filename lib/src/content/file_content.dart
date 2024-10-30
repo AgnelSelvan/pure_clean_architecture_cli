@@ -221,7 +221,6 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:$packageName/core/domain/entity/use_case.dart';
 
 part '${featureName}_cubit.freezed.dart';
 part '${featureName}_state.dart';
@@ -421,10 +420,6 @@ String dataFreezedRepositoryFileContent(
 import 'package:injectable/injectable.dart';
 import 'package:$packageName/features/$featureName/domain/repository/${featureName}_repository.dart';
 
-@LazySingleton(as: TfoRepository)
-class TfoRepositoryImpl extends TfoRepository {}
-
-
 @LazySingleton(as: ${featureNameUppercase}Repository)
 class ${featureNameUppercase}RepositoryImpl extends ${featureNameUppercase}Repository {
 }
@@ -456,8 +451,6 @@ String domainFreezedRepositoryFileContent(
     String featureName, String packageName) {
   final featureNameUppercase = featureName.snakeToCamel();
   return '''
-import 'package:dartz/dartz.dart';
-
 abstract class ${featureNameUppercase}Repository {
 }
 ''';
