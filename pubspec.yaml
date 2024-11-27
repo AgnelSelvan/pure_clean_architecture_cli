@@ -1,6 +1,6 @@
 name: pure_clean_architecture_cli
 description: A dart cli for generating Clean Architecture inside lib folder under features directory.
-version: 1.2.5
+version: 1.2.7
 repository: https://github.com/AgnelSelvan/pure_clean_architecture_cli.git
 
 environment:

@@ -21,3 +21,6 @@
 
 ## 1.2.6
 - Import Issue fixes
+
+## 1.2.7
+- Enhancement on Freezed Remote datasource

@@ -518,13 +518,19 @@ String getFreezedRemoteDataSourceFileContent(
   final featureNameUppercase = featureName.snakeToCamel();
   return '''
 import 'package:injectable/injectable.dart';
+import 'package:$packageName/core/data/data_source/remote/network/network.dart';
+import 'package:$packageName/core/data/data_source/remote/network/api_urls.dart';
 
 abstract class ${featureNameUppercase}RemoteDataSource {
 
 }
 @LazySingleton(as: ${featureNameUppercase}RemoteDataSource)
-class ${featureNameUppercase}RemoteDataSourceImpl extends ${featureNameUppercase}RemoteDataSource {
-
+class ${featureNameUppercase}RemoteDataSourceImpl extends ApiHandlerMiddleWare implements ${featureNameUppercase}RemoteDataSource {
+      final ApiUrls apiUrls;
+      ${featureNameUppercase}RemoteDataSourceImpl({
+            required super.serverRequestManager,
+            required this.apiUrls,
+      });
 }
 ''';
 }
