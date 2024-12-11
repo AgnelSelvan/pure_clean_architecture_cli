@@ -525,10 +525,12 @@ abstract class ${featureNameUppercase}RemoteDataSource {
 
 }
 @LazySingleton(as: ${featureNameUppercase}RemoteDataSource)
-class ${featureNameUppercase}RemoteDataSourceImpl extends ApiHandlerMiddleWare implements ${featureNameUppercase}RemoteDataSource {
+class ${featureNameUppercase}RemoteDataSourceImpl extends ${featureNameUppercase}RemoteDataSource {
       final ApiUrls apiUrls;
+      final ApiHandlerMiddleWare apiHandlerMiddleWare;
+
       ${featureNameUppercase}RemoteDataSourceImpl({
-            required super.serverRequestManager,
+            required this.apiHandlerMiddleWare,
             required this.apiUrls,
       });
 }

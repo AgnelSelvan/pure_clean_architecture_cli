@@ -24,3 +24,6 @@
 
 ## 1.2.7
 - Enhancement on Freezed Remote datasource
+
+## 1.2.9
+- Enhancement on Freezed Remote datasource
